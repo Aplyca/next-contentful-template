@@ -1,0 +1,7 @@
+.next
+dist
+node_modules/
+postcss.config.js
+next.config.mjs
+next-env.d.ts
+package.json

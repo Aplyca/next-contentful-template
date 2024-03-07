@@ -1,0 +1,80 @@
+services:
+  app:
+    container_name: ${APP_NAME:-[PROJECT_NAME_MAY]}-App
+    hostname: app
+    image: ${IMAGE_REPO:-aplyca/web/[PROJECT_NAME_MIN]}${IMAGE_TAG:-}
+    working_dir: /app
+    build:
+      context: .
+      dockerfile: ops/app/Dockerfile
+      target: ${TARGET_IMAGE:-dev}
+      cache_from:
+        - ${IMAGE_REPO:-aplyca/web/[PROJECT_NAME_MIN]}${IMAGE_TAG:-}
+        - ${IMAGE_REPO:-aplyca/web/[PROJECT_NAME_MIN]}${IMAGE_CACHE_TAG:-:latest}
+      args:
+        NODE_ENV: ${NODE_ENV:-development}
+        CONTENTFUL_ENVIRONMENT: ${CONTENTFUL_ENVIRONMENT:-master}
+        CONTENTFUL_SPACE_ID: ${CONTENTFUL_SPACE_ID:-}
+        CONTENTFUL_DELIVERY_API_TOKEN: ${CONTENTFUL_DELIVERY_API_TOKEN:?err}
+        CONTENTFUL_PREVIEW_API_TOKEN: ${CONTENTFUL_PREVIEW_API_TOKEN:?err}
+        REVALIDATE_SECRET_TOKEN: ${REVALIDATE_SECRET_TOKEN:-test}
+        DRAFT_SECRET_TOKEN: ${DRAFT_SECRET_TOKEN:-test}
+    ports:
+      - "${PROJECT_PORT_PREFIX:-27}080:3000"
+    volumes:
+      - ./src:/app/src:rw
+      - ./public:/app/public:rw
+      - ./tailwind.config.ts:/app/tailwind.config.ts:rw
+      - ./postcss.config.js:/app/postcss.config.js:rw
+      - ./next.config.js:/app/next.config.js:rw
+      - ./.eslintrc.json:/app/.eslintrc.json:rw
+      - ./.eslintignore:/app/.eslintignore:rw
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      VERCEL_ENV: ${VERCEL_ENV:-development}
+      CONTENTFUL_ENVIRONMENT: ${CONTENTFUL_ENVIRONMENT:-master}
+      CONTENTFUL_SPACE_ID: ${CONTENTFUL_SPACE_ID:-}
+      CONTENTFUL_DELIVERY_API_TOKEN: ${CONTENTFUL_DELIVERY_API_TOKEN:?err}
+      CONTENTFUL_PREVIEW_API_TOKEN: ${CONTENTFUL_PREVIEW_API_TOKEN:?err}
+      REVALIDATE_SECRET_TOKEN: ${REVALIDATE_SECRET_TOKEN:-test}
+      DRAFT_SECRET_TOKEN: ${DRAFT_SECRET_TOKEN:-test}
+      ALGOLIA_APP_ID: ${ALGOLIA_APP_ID:-}
+      ALGOLIA_SEARCH_API_KEY: ${ALGOLIA_SEARCH_API_KEY:-}
+      ALGOLIA_INDEX_NAME: ${ALGOLIA_INDEX_NAME:-}
+      DEFAULT_DOMAIN: ${DEFAULT_DOMAIN:-}
+    networks:
+      - public
+    restart: unless-stopped
+  storybook:
+    container_name: ${APP_NAME:-[PROJECT_NAME_MAY]}-Storybook
+    hostname: storybook
+    image: ${IMAGE_REPO:-aplyca/web/[PROJECT_NAME_MIN]-sb}${IMAGE_TAG:-}
+    working_dir: /app
+    build:
+      context: .
+      dockerfile: ops/storybook/Dockerfile
+      cache_from:
+        - ${IMAGE_REPO:-aplyca/web/[PROJECT_NAME_MIN]-sb}${IMAGE_TAG:-}
+        - ${IMAGE_REPO:-aplyca/web/[PROJECT_NAME_MIN]-sb}${IMAGE_CACHE_TAG:-:latest}
+      args:
+        NODE_ENV: ${NODE_ENV:-development}
+    ports:
+      - "${PROJECT_PORT_PREFIX:-27}006:6006"
+    volumes:
+      - ./src:/app/src:rw
+      - ./tailwind.config.ts:/app/tailwind.config.ts:rw
+      - ./postcss.config.js:/app/postcss.config.js:rw
+      - ./next.config.js:/app/next.config.js:rw
+      - ./.eslintrc.json:/app/.eslintrc.json:rw
+      - ./.eslintignore:/app/.eslintignore:rw
+      - ./.storybook:/app/.storybook:rw
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+    networks:
+      - public
+    restart: unless-stopped
+networks:
+  public:
+    name: ${APP_NAME:-[PROJECT_NAME_MAY]}-Public
+
+version: "3.7"

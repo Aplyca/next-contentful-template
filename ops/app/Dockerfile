@@ -1,0 +1,70 @@
+##### Building Base image #####
+FROM node:18-alpine as base
+
+# Set timezone
+RUN apk add --no-cache tzdata
+ENV TZ=America/Bogota
+
+RUN mkdir -p /app
+WORKDIR /app
+
+## Copy package files
+COPY package.json yarn.loc[k] .yarnrc.ym[l] .yarn ./
+COPY .yarn ./.yarn
+
+## Install packages
+RUN yarn --version
+RUN yarn install
+
+EXPOSE 3000
+
+FROM base as dev
+
+ENV NODE_ENV=development
+
+## Install util packages
+RUN apk add --update --no-cache vim
+
+## Install contenful cli
+RUN npm install -g contentful-cli
+
+COPY . .
+
+CMD [ "yarn", "dev" ]
+
+FROM base as prod
+
+ENV NODE_ENV=production
+
+ARG NODE_ENV
+ENV NODE_ENV=$NODE_ENV
+
+ARG CONTENTFUL_ENVIRONMENT
+ENV CONTENTFUL_ENVIRONMENT=$CONTENTFUL_ENVIRONMENT
+
+ARG CONTENTFUL_SPACE_ID
+ENV CONTENTFUL_SPACE_ID=$CONTENTFUL_SPACE_ID
+
+ARG CONTENTFUL_DELIVERY_API_TOKEN
+ENV CONTENTFUL_DELIVERY_API_TOKEN=$CONTENTFUL_DELIVERY_API_TOKEN
+
+ARG CONTENTFUL_PREVIEW_API_TOKEN
+ENV CONTENTFUL_PREVIEW_API_TOKEN=$CONTENTFUL_PREVIEW_API_TOKEN
+
+ARG REVALIDATE_SECRET_TOKEN
+ENV REVALIDATE_SECRET_TOKEN=$REVALIDATE_SECRET_TOKEN
+
+ARG DEFAULT_DOMAIN
+ENV DEFAULT_DOMAIN=$DEFAULT_DOMAIN
+
+ARG NEXT_PUBLIC_GTM_ID
+ENV NEXT_PUBLIC_GTM_ID=$NEXT_PUBLIC_GTM_ID
+
+ARG NEXT_PUBLIC_GA_MEASUREMENT_ID
+ENV NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID
+
+COPY . .
+
+RUN yarn build
+
+CMD [ "yarn", "start" ]

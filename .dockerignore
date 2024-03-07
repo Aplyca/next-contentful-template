@@ -1,0 +1,8 @@
+README.md
+.next
+dist
+node_modules/
+docker-compose.yml
+.vscode
+.git
+/**/*.old
