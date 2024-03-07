@@ -1,7 +1,7 @@
 # [PROJECT_NAME_MAY] Website
 ---
 
-[![License | MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENCE.md) [![platform Linux | macOS | Windows](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey.svg)](https://www.docker.com/products/docker-desktop) [![pipeline status](https://github.com/[ORG]/[PROJECT_NAME]/actions/workflows/deploy.prod.yml/badge.svg)](https://github.com/[ORG]/[PROJECT_NAME]/actions/workflows/deploy.prod.yml) 
+[![License | MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENCE.md) [![platform Linux | macOS | Windows](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey.svg)](https://www.docker.com/products/docker-desktop) [![pipeline status](https://github.com/Aplyca/next-contentful-template/actions/workflows/deploy.prod.yml/badge.svg)](https://github.com/Aplyca/next-contentful-template/actions/workflows/deploy.prod.yml) 
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) for develop [[PROJECT_NAME]]([PROJECT_URL]) webpage with [Contentful](https://www.contentful.com) headless CMS and [Vercel](https://www.vercel.com) as PaaS provider.
