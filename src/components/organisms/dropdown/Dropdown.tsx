@@ -1,14 +1,15 @@
 'use client';
 import React, { useState } from 'react';
 
-interface DropdownProps {
-  /** Text to show in the Dropdown button */
-  title: string;
-}
+import CustomLink from '@/components/atoms/custom-link/CustomLink';
+import { type NavigationProps } from '@/types/navigation.types';
 
-const Dropdown: React.FC<DropdownProps> = ({ title }) => {
+const Dropdown: React.FC<NavigationProps> = ({
+  title,
+  mainNavigationCollection,
+  sys,
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
   return (
     <div className="relative w-full md:w-fit">
       <button
@@ -39,24 +40,13 @@ const Dropdown: React.FC<DropdownProps> = ({ title }) => {
           } absolute right-0 w-full mt-2 origin-top-right rounded-md shadow-lg md:w-48`}
         >
           <div className="px-2 py-2 bg-white rounded-md shadow dark:bg-white">
-            <a
-              className="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-black md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-              href="#"
-            >
-              Article 1
-            </a>
-            <a
-              className="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-black md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-              href="#"
-            >
-              Article 2
-            </a>
-            <a
-              className="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-black md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-              href="#"
-            >
-              Article 3
-            </a>
+            {mainNavigationCollection?.items?.map((navItem, idx) => (
+              <CustomLink
+                content={navItem}
+                key={`${sys.id}-${navItem.sys.id}-${idx}`}
+                linkClassName="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-black md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+              />
+            ))}
           </div>
         </div>
       )}

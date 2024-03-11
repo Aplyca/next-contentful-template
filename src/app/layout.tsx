@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import { draftMode } from 'next/headers';
 import Image from 'next/image';
 
@@ -8,8 +7,10 @@ import './globals.css';
 import Navbar from '@/components/organisms/navbar/Navbar';
 import { CONTENTFUL_TYPE_NAMES } from '@/constants/contentful-names.constants';
 import getEntryContent from '@/services/entry-content.service';
+import { type NavigationProps } from '@/types/navigation.types';
+import { interFont } from '@/ui/fonts';
 
-const inter = Inter({ subsets: ['latin'] });
+import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -19,46 +20,52 @@ export const metadata: Metadata = {
 const RootLayout: React.FC<React.PropsWithChildren> = async ({ children }) => {
   const { isEnabled: preview } = draftMode();
 
-  const HeaderInfo = await getEntryContent(
-    {
-      __typename: CONTENTFUL_TYPE_NAMES.NAVIGATION,
-      sys: { id: '31ogQ34AM3nN8PLlDo1DXQ' },
-    },
-    preview,
-    true,
-    3,
-  );
-
-  console.log('A ver', HeaderInfo);
+  const HeaderInfo: NavigationProps | null =
+    await getEntryContent<NavigationProps>({
+      blockInfo: {
+        __typename: CONTENTFUL_TYPE_NAMES.NAVIGATION,
+        sys: { id: '31ogQ34AM3nN8PLlDo1DXQ' },
+      },
+      preview,
+      overrideMaxDepth: 3,
+      recursive: true,
+    });
 
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <main className="flex min-h-screen flex-col items-center justify-between p-10 md:p-24">
-          <div className="z-[100] md:z-auto max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-            <Navbar />
-            <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-              <a
-                className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-                href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                By{' '}
-                <Image
-                  src="/vercel.svg"
-                  alt="Vercel Logo"
-                  className="dark:invert"
-                  width={100}
-                  height={24}
-                  priority
-                />
-              </a>
+      <body className={interFont.className}>
+        <Providers isEnabledDraft={preview}>
+          <main className="flex min-h-screen flex-col items-center justify-between p-10 md:p-24">
+            <div className="z-[100] max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+              {HeaderInfo && <Navbar {...HeaderInfo} />}
+              {HeaderInfo?.image?.url && (
+                <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
+                  <a
+                    className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
+                    href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    By{' '}
+                    <Image
+                      src={HeaderInfo?.image?.url}
+                      alt={
+                        HeaderInfo?.image?.description ??
+                        HeaderInfo?.image?.title
+                      }
+                      className="dark:invert"
+                      width={100}
+                      height={24}
+                      priority
+                    />
+                  </a>
+                </div>
+              )}
             </div>
-          </div>
 
-          {children}
-        </main>
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );

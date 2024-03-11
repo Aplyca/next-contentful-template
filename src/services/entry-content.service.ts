@@ -5,10 +5,11 @@ import { MINIMAL_SUFIX } from '@/constants/contentful-names.constants';
 import CONTENTFUL_QUERY_MAPS from '@/constants/contentful-query-maps.constants';
 
 import getContentReferences from './content-references.service';
-import contentfulClient, {
+import getContentfulClient, {
   removeUnresolved,
 } from './contentful-client.service';
 import getRichtextReferences from './richtext-references.service';
+// import populateAutomaticContent from './automatic-content.service';
 
 export interface DefaultBlockInfo {
   __typename: string;
@@ -17,13 +18,19 @@ export interface DefaultBlockInfo {
   };
 }
 
-const getEntryContent = async (
-  blockInfo: DefaultBlockInfo,
+const getEntryContent = async <T>({
+  blockInfo,
   preview = false,
   recursive = false,
   overrideMaxDepth = 0,
   locale = 'en',
-): Promise<any> => {
+}: {
+  blockInfo: DefaultBlockInfo;
+  preview?: boolean;
+  recursive?: boolean;
+  overrideMaxDepth?: number;
+  locale?: string;
+}): Promise<T | null> => {
   if (!blockInfo || !CONTENTFUL_QUERY_MAPS[blockInfo.__typename]) {
     console.error(
       `Error on getEntryContent: «blockInfo» are required or it's not defined`,
@@ -46,7 +53,7 @@ const getEntryContent = async (
   } = CONTENTFUL_QUERY_MAPS[blockInfo.__typename];
 
   try {
-    ({ data: responseData, errors: responseError } = await contentfulClient(
+    ({ data: responseData, errors: responseError } = await getContentfulClient(
       preview,
     ).query({
       query: gql`
@@ -66,13 +73,13 @@ const getEntryContent = async (
     }));
     responseData = removeUnresolved(responseData, responseError);
   } catch (e: any) {
-    console.error(`Error on getEntryContent reason:`, e.message);
+    console.error('Error on getEntryContent reason:', e.message);
     return null;
   }
 
   if (!responseData?.[type]) return null;
 
-  const entryContent = JSON.parse(JSON.stringify(responseData?.[type]));
+  const entryContent: DefaultBlockInfo & Record<string, any> & T = _.cloneDeep(responseData?.[type]);
 
   if (blockInfo.__typename.endsWith(MINIMAL_SUFIX)) {
     entryContent.__typename = blockInfo.__typename + MINIMAL_SUFIX;
@@ -103,6 +110,24 @@ const getEntryContent = async (
 
     _.merge(entryContent, referencesContent);
   }
+
+  /*
+  if (blockEntryContent?.automaticContent) {
+    const automaticContent: any = await populateAutomaticContent(
+      blockEntryContent,
+      preview,
+    );
+    if (automaticContent?.items) {
+      blockEntryContent.primaryContentsCollection.items.push(
+        ...automaticContent?.items,
+      );
+
+      _.merge(blockEntryContent.automaticContent, {
+        initialData: automaticContent,
+      });
+    }
+  }
+  */
 
   return entryContent;
 };

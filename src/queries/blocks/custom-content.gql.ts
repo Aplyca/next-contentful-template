@@ -13,7 +13,8 @@ export const CustomContentMinimalQuery = `
 
 const CustomContentQuery = `
   ${CustomContentMinimalQuery}
-  media {
+  mediaLink {
+    title
     url
   }
   internalLink {

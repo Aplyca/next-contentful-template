@@ -2,14 +2,13 @@
 
 import React, { useState } from 'react';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import CustomLink from '@/components/atoms/custom-link/CustomLink';
+import { type NavigationProps } from '@/types/navigation.types';
 
 import Dropdown from '../dropdown/Dropdown';
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<NavigationProps> = ({ mainNavigationCollection }) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
-  const pathname = usePathname();
 
   return (
     <div className="text-black bg-transparent dark:text-white mb-6 z-[100] md:z-auto">
@@ -44,20 +43,24 @@ const Navbar: React.FC = () => {
               isOpen ? 'flex' : 'hidden'
             } flex-col flex-grow pb-4 md:pb-0 md:flex md:justify-end md:flex-row md:gap-5`}
           >
-            <Link
-              className={`px-4 py-2 mt-2 text-sm font-semibold ${pathname === '/' ? 'bg-black dark:bg-white text-white dark:text-black' : 'bg-transparent'} rounded-lg dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline`}
-              href="/"
-            >
-              Home
-            </Link>
-            <a
-              className={`px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline`}
-              href="//www.aplyca.com/en/contact-us"
-              target="_blank"
-            >
-              Contact us
-            </a>
-            <Dropdown title="Blog" />
+            {mainNavigationCollection?.items?.map((navItem, idx) =>
+              navItem?.mainNavigationCollection?.items ? (
+                <Dropdown
+                  {...navItem}
+                  key={`${navItem.sys.id}-${idx}`}
+                />
+              ) : (
+                <CustomLink
+                  key={`${navItem.sys.id}-${idx}`}
+                  content={navItem}
+                  customLinkClasses={{
+                    default: 'bg-transparent',
+                    active: 'bg-black dark:bg-white text-white dark:text-black',
+                  }}
+                  linkClassName={`px-4 py-2 mt-2 text-sm font-semibold rounded-lg dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline`}
+                />
+              ),
+            )}
           </nav>
         </div>
       </div>

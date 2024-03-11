@@ -1,7 +1,7 @@
 import { CONTENTFUL_TYPE_NAMES } from '@/constants/contentful-names.constants';
 
 import ContentFilterQuery from './content-filter.gql';
-import { CustomContentMinimalQuery } from './custom-content.gql';
+import CustomContentQuery from './custom-content.gql';
 import { ArticleMinimalQuery } from '../article.gql';
 import DefaultQuery, { AssetImageQuery, RichtextQuery } from '../misc.gql';
 import { PageMinimalQuery } from '../page.gql';
@@ -15,7 +15,7 @@ export const BlockContentPromoFragments = `
     ${ArticleMinimalQuery}
   }
   fragment CustomContentMinimalFragment on ${CONTENTFUL_TYPE_NAMES.CUSTOM_CONTENT} {
-    ${CustomContentMinimalQuery}
+    ${CustomContentQuery}
   }
 `;
 

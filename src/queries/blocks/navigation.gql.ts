@@ -12,6 +12,9 @@ export const NavigationFragments = `
   fragment ArticleDefaultFragment on ${CONTENTFUL_TYPE_NAMES.ARTICLE} {
     ${DefaultQuery}
   }
+  fragment NavigationDefaultFragment on ${CONTENTFUL_TYPE_NAMES.NAVIGATION} {
+    ${DefaultQuery}
+  }
 `;
 
 const NavigationQuery = `
@@ -23,16 +26,7 @@ const NavigationQuery = `
   }
   mainNavigationCollection(limit: 10) {
     items {
-      ...on ${CONTENTFUL_TYPE_NAMES.NAVIGATION} {
-        ${DefaultQuery}
-        mainNavigationCollection(limit: 10) {
-          items {
-            ...CustomContentDefaultFragment
-            ...PageDefaultFragment
-            ...ArticleDefaultFragment
-          }
-        }
-      }
+      ...NavigationDefaultFragment
       ...CustomContentDefaultFragment
       ...PageDefaultFragment
       ...ArticleDefaultFragment
@@ -40,16 +34,7 @@ const NavigationQuery = `
   }
   auxiliaryNavigationCollection(limit: 10) {
     items {
-      ...on ${CONTENTFUL_TYPE_NAMES.NAVIGATION} {
-        ${DefaultQuery}
-        mainNavigationCollection(limit: 10) {
-          items {
-            ...CustomContentDefaultFragment
-            ...PageDefaultFragment
-            ...ArticleDefaultFragment
-          }
-        }
-      }
+      ...NavigationDefaultFragment
       ...CustomContentDefaultFragment
       ...PageDefaultFragment
       ...ArticleDefaultFragment
