@@ -20,6 +20,11 @@ const CustomLink: React.FC<CustomLinkProps> = ({
   const { href, target, isExternalLink, textLink } = getLinkProps(content);
   const pathname = usePathname();
 
+  let extraClassNames = customLinkClasses?.default ?? '';
+  if ((pathname === '/' && href === '/') || (pathname !== '/' && href.startsWith(pathname))) {
+    extraClassNames = customLinkClasses?.active ?? '';
+  }
+
   return asButton ? (
     <button
       title={linkTitle}
@@ -44,7 +49,7 @@ const CustomLink: React.FC<CustomLinkProps> = ({
       onFocus={(evt) => {
         onFocus(evt);
       }}
-      className={`${linkClassName} ${customLinkClasses?.default && customLinkClasses?.active ? (pathname.startsWith(href) ? customLinkClasses.active : customLinkClasses.default) : ''}`}
+      className={`${linkClassName} ${extraClassNames}`}
       scroll={true}
       download={isDownload}
       title={linkTitle}

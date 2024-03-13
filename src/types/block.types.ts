@@ -5,26 +5,8 @@ import type {
   DefaultBlockInfoProps,
 } from './misc.types';
 import { type PageProps } from './page.types';
+import { type BlockContentFilterProps } from './search.types';
 import type { SimpleViewOptions, ViewPromoBlock } from './view.types';
-
-type ContentTypeOptions = null | 'Article' | 'Page';
-type FacetOptions = null | 'Category';
-type SortByOptions =
-  | null
-  | 'Alphabetic (asc)'
-  | 'Alphabetic (desc)'
-  | 'Date (asc)'
-  | 'Date (desc)';
-
-export interface BlockContentFilterProps extends DefaultBlockInfoProps {
-  name: string;
-  searchEngine: 'Algolia' | 'Contentful';
-  contentTypes?: ContentTypeOptions[];
-  facets?: FacetOptions[];
-  sortBy: SortByOptions;
-  itemsPerPage: number;
-  extraConditions: string[];
-}
 
 export interface CustomContentProps extends DefaultBlockInfoProps {
   title: string;

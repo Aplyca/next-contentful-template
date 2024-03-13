@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { MINIMAL_SUFIX } from '@/constants/contentful-names.constants';
 import CONTENTFUL_QUERY_MAPS from '@/constants/contentful-query-maps.constants';
 
+import populateAutomaticContent from './automatic-content.service';
 import getContentReferences from './content-references.service';
 import getContentfulClient, {
   removeUnresolved,
@@ -79,7 +80,9 @@ const getEntryContent = async <T>({
 
   if (!responseData?.[type]) return null;
 
-  const entryContent: DefaultBlockInfo & Record<string, any> & T = _.cloneDeep(responseData?.[type]);
+  const entryContent: DefaultBlockInfo & Record<string, any> & T = _.cloneDeep(
+    responseData?.[type],
+  );
 
   if (blockInfo.__typename.endsWith(MINIMAL_SUFIX)) {
     entryContent.__typename = blockInfo.__typename + MINIMAL_SUFIX;
@@ -111,23 +114,21 @@ const getEntryContent = async <T>({
     _.merge(entryContent, referencesContent);
   }
 
-  /*
-  if (blockEntryContent?.automaticContent) {
+  if (entryContent?.automaticContent) {
     const automaticContent: any = await populateAutomaticContent(
-      blockEntryContent,
+      entryContent,
       preview,
     );
     if (automaticContent?.items) {
-      blockEntryContent.primaryContentsCollection.items.push(
+      entryContent.manualContentsCollection.items.push(
         ...automaticContent?.items,
       );
 
-      _.merge(blockEntryContent.automaticContent, {
+      _.merge(entryContent.automaticContent, {
         initialData: automaticContent,
       });
     }
   }
-  */
 
   return entryContent;
 };

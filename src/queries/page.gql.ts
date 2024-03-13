@@ -17,6 +17,7 @@ export const PageMinimalQuery = `
 const PageQuery = `
   ${DefaultQuery}
   ${PageMinimalQuery}
+  subtitle
   content {
     ${RichtextQuery}
   }
@@ -27,6 +28,7 @@ const PageQuery = `
       }
     }
   }
+  displayOptions
 `;
 
 export default PageQuery;

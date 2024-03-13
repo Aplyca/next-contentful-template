@@ -1,22 +1,52 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+
+import { usePathname } from 'next/navigation';
 
 import CustomLink from '@/components/atoms/custom-link/CustomLink';
 import { type NavigationProps } from '@/types/navigation.types';
+import { getLinkProps } from '@/utils/navigation.functions';
 
-const Dropdown: React.FC<NavigationProps> = ({
-  title,
-  mainNavigationCollection,
-  sys,
-}) => {
+const Dropdown: React.FC<
+  NavigationProps & {
+    customLinkClasses?: {
+      default: string;
+      active: string;
+    };
+  }
+> = ({ title, mainNavigationCollection, customLinkClasses = null, sys }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const pathname = usePathname();
+
+  const checkItemsLinks = useCallback((pathname: string) => {
+    return (
+      mainNavigationCollection?.items?.some((content: any) => {
+        const { href } = getLinkProps(content);
+
+        return (
+          (pathname === '/' && href === '/') ||
+          (pathname !== '/' && href.startsWith(pathname))
+        );
+      }) ?? false
+    );
+  }, []);
+
+  let extraClassNames = customLinkClasses?.default ?? '';
+  if (checkItemsLinks(pathname)) {
+    extraClassNames = customLinkClasses?.active ?? '';
+  }
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   return (
     <div className="relative w-full md:w-fit">
       <button
         onClick={() => {
           setIsOpen(!isOpen);
         }}
-        className="flex flex-row items-center w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent rounded-lg dark:bg-transparent dark:focus:text-white dark:hover:text-white dark:focus:bg-gray-600 dark:hover:bg-gray-600 md:w-auto md:inline md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
+        className={`flex flex-row items-center w-full px-5 py-2 mt-2 text-sm font-semibold text-left rounded-lg dark:focus:text-white dark:hover:text-white dark:focus:bg-gray-600 dark:hover:bg-gray-600 md:w-auto md:inline md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline ${extraClassNames}`}
       >
         <span>{title}</span>
         <svg

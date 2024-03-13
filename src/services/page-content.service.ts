@@ -2,11 +2,11 @@ import { gql } from '@apollo/client';
 import _ from 'lodash';
 
 import {
-  CONTENTFUL_QUERY_NAMES,
   CONTENTFUL_TYPE_NAMES,
   MINIMAL_SUFIX,
 } from '@/constants/contentful-names.constants';
 import CONTENTFUL_QUERY_MAPS from '@/constants/contentful-query-maps.constants';
+import { type ArticleProps } from '@/types/blog.types';
 import { type PageProps } from '@/types/page.types';
 
 import getContentReferences from './content-references.service';
@@ -34,7 +34,7 @@ const getPageContent = async ({
   preview?: boolean;
   recursive?: boolean;
   locale?: string;
-}): Promise<PageProps | null> => {
+}): Promise<(PageProps & ArticleProps) | null> => {
   if (!urlPath || urlPath === '') throw new Error(`«urlPath» is required`);
 
   let responseData: Record<string, any> | null = null;
@@ -80,14 +80,17 @@ const getPageContent = async ({
   }
 
   const typeFound = Object.keys(responseData ?? {}).find((tf) => {
-    return allowedQueryNamesAsPages.includes(tf.replace('Collection', '')) && responseData?.[tf]?.items?.[0];
+    return (
+      allowedQueryNamesAsPages.includes(tf.replace('Collection', '')) &&
+      responseData?.[tf]?.items?.[0]
+    );
   });
 
   if (!typeFound || !responseData?.[typeFound]?.items?.[0]) {
     return null;
   }
 
-  const pageContent: PageProps = _.cloneDeep(
+  const pageContent: PageProps & ArticleProps = _.cloneDeep(
     responseData[typeFound]?.items?.[0],
   );
 

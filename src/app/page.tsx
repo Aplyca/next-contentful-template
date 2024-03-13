@@ -1,5 +1,6 @@
 import React, { cache } from 'react';
 
+import { type NextPage } from 'next';
 import { draftMode } from 'next/headers';
 import { notFound } from 'next/navigation';
 
@@ -21,7 +22,7 @@ const getCachedPageContent = cache(
   },
 );
 
-const Home: React.FC = async () => {
+const Home: NextPage = async () => {
   const { isEnabled: preview } = draftMode();
   const pageInfo: PageProps | null = await getCachedPageContent('/', preview);
 

@@ -1,8 +1,3 @@
-import { CONTENTFUL_TYPE_NAMES } from "@/constants/contentful-names.constants";
-
-import CustomContentQuery from "./blocks/custom-content.gql";
-import { PageMinimalQuery } from "./page.gql";
-
 const DefaultQuery = `
   __typename
   sys {

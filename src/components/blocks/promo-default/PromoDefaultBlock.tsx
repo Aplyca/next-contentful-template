@@ -36,8 +36,13 @@ const PromoDefaultBlock: React.FC<BlockContentPromoProps> = ({
         » undefined
       </legend>
       <p className="text-sm text-gray-700 w-full bg-red-200 border border-red-300 p-3 rounded">
-        This block is not defined or mapped, please update/implement in{' '}
-        <code>src/constants/blocks-view-map.constants.ts</code>.
+        This block is a default element that is only rendered in development
+        mode in case there is no definition for the content/view type. To define
+        the block to use, edit the file:{' '}
+        <code className="py-[.5px] px-1 border border-orange-300 bg-orange-200 font-mono font-semibold">
+          src/constants/blocks-view-map.constants.ts
+        </code>
+        .
       </p>
 
       <div className="w-full flex justify-center items-start gap-4">
@@ -69,13 +74,16 @@ const PromoDefaultBlock: React.FC<BlockContentPromoProps> = ({
         )}
         <section className="flex flex-1 flex-col">
           {updatedPost.title && (
-            <small className="mt-2" {...inspectorProps({ fieldId: 'title' })}>
+            <p
+              className="mb-2 text-[.8rem]"
+              {...inspectorProps({ fieldId: 'title' })}
+            >
               <strong>Title:</strong> {updatedPost.title}
-            </small>
+            </p>
           )}
           {updatedPost.description && (
             <div
-              className={`${ralewayFont.className} text-sm mt-4`}
+              className={`${ralewayFont.className} text-sm mb-2`}
               {...inspectorProps({ fieldId: 'description' })}
             >
               <small className="block font-bold">Description:</small>
@@ -83,8 +91,8 @@ const PromoDefaultBlock: React.FC<BlockContentPromoProps> = ({
             </div>
           )}
           {!!updatedPost?.manualContentsCollection?.items?.[0] && (
-            <div>
-              <small className="block font-bold">Manual contents:</small>
+            <div className="mb-2">
+              <small className="block font-bold mb-2">Manual contents:</small>
               <pre
                 className={`${ralewayFont.className} text-sm overflow-y-auto max-h-80 bg-gray-200 border border-gray-300 p-3 rounded w-full whitespace-pre-wrap`}
                 {...inspectorProps({ fieldId: 'manualContents' })}
@@ -94,31 +102,31 @@ const PromoDefaultBlock: React.FC<BlockContentPromoProps> = ({
             </div>
           )}
           {!!updatedPost?.automaticContent && (
-            <div>
-              <small className="block font-bold">Automatic content:</small>
-              <code
+            <div className="mb-2">
+              <small className="block font-bold mb-2">Automatic content:</small>
+              <pre
                 className={`${ralewayFont.className} text-sm overflow-y-auto max-h-80 bg-gray-200 border border-gray-300 p-3 rounded w-full whitespace-pre-wrap`}
                 {...inspectorProps({ fieldId: 'manualContents' })}
               >
                 {JSON.stringify(updatedPost.automaticContent)}
-              </code>
+              </pre>
             </div>
           )}
           {updatedPost.simpleView && (
-            <small
-              className="mt-2"
+            <p
+              className="mb-2 text-[.8rem]"
               {...inspectorProps({ fieldId: 'simpleView' })}
             >
               <strong>Simple view:</strong> {updatedPost.simpleView}
-            </small>
+            </p>
           )}
           {updatedPost.customView?.name && (
-            <small
-              className="mt-2"
+            <p
+              className="mb-2 text-[.8rem]"
               {...inspectorProps({ fieldId: 'customView' })}
             >
               <strong>Custom view:</strong> {updatedPost.customView.name}
-            </small>
+            </p>
           )}
           {updatedPost.ctaCollection?.items?.map((cta) => (
             <div key={cta.sys?.id} {...inspectorProps({ fieldId: 'cta' })}>
@@ -129,10 +137,6 @@ const PromoDefaultBlock: React.FC<BlockContentPromoProps> = ({
           ))}
         </section>
       </div>
-      <small className="text-xs text-gray-700">
-        !!! This block is a default element and is only available in development
-        mode.
-      </small>
     </fieldset>
   );
 };

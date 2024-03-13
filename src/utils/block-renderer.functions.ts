@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { createElement } from 'react';
 
 import PromoDefaultBlock from '@/components/blocks/promo-default/PromoDefaultBlock';
@@ -16,7 +15,10 @@ const viewNoSupported = (
     typeof blockInfo !== 'string' &&
     process.env.NODE_ENV === 'development'
   ) {
-    return createElement(PromoDefaultBlock, blockInfo);
+    return createElement(PromoDefaultBlock, {
+      ...blockInfo,
+      key: blockInfo.sys.id,
+    });
   } else if (typeof blockInfo === 'string') {
     return createElement(
       'div',

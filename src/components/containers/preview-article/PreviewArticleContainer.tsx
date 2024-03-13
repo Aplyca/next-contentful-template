@@ -8,12 +8,11 @@ import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import Image from 'next/image';
 
 import { DEFAULT_FORMATTER_OPTIONS } from '@/constants/richtext.constants';
-import type { PageProps } from '@/types/page.types';
+import { type ArticleProps } from '@/types/blog.types';
 import { ralewayFont } from '@/ui/fonts';
-import jsonToReactComponents from '@/utils/block-renderer.functions';
 import { attachLinksToRichtextContent } from '@/utils/richtext.functions';
 
-const PreviewPageContainer: React.FC<PageProps> = (
+const PreviewArticleContainer: React.FC<ArticleProps> = (
   pageInfo,
 ): React.ReactNode => {
   const updatedPost = useContentfulLiveUpdates(pageInfo);
@@ -22,14 +21,11 @@ const PreviewPageContainer: React.FC<PageProps> = (
   });
 
   return (
-    <div
-      {...inspectorProps({ fieldId: 'blocks' })}
-      className="w-full flex flex-1 flex-col items-center justify-start lg:max-w-5xl"
-    >
+    <div className="w-full flex flex-1 flex-col items-center justify-start lg:max-w-5xl">
       {updatedPost?.media?.url && (
         <div
           {...inspectorProps({ fieldId: 'media' })}
-          className="w-full overflow-hidden relative aspect-[6/1]"
+          className="w-full overflow-hidden relative aspect-[6/1] lg:max-w-5xl"
         >
           {updatedPost?.media?.contentType?.startsWith('video') ? (
             <video
@@ -52,39 +48,28 @@ const PreviewPageContainer: React.FC<PageProps> = (
         </div>
       )}
 
-      {(updatedPost?.title || updatedPost?.subtitle) &&
-        !updatedPost.displayOptions?.includes('Hide heading') && (
-          <h1
-            {...inspectorProps({ fieldId: 'title' })}
-            className={`${ralewayFont.className} font-bold text-center text-5xl mt-4 mb-9`}
-          >
-            {updatedPost?.title}
-            {updatedPost?.subtitle && (
-              <small
-                {...inspectorProps({ fieldId: 'subtitle' })}
-                className="text-center block text-xs font-medium mt-3"
-              >
-                {updatedPost.subtitle}
-              </small>
-            )}
-          </h1>
-        )}
+      {updatedPost?.title && (
+        <h1
+          {...inspectorProps({ fieldId: 'title' })}
+          className={`${ralewayFont.className} font-bold text-center text-5xl mt-4 mb-9`}
+        >
+          {updatedPost.title}
+        </h1>
+      )}
 
-      {updatedPost?.content?.json && (
-        <div {...inspectorProps({ fieldId: 'content' })}>
+      {updatedPost?.body?.json && (
+        <div {...inspectorProps({ fieldId: 'body' })}>
           {documentToReactComponents(
             attachLinksToRichtextContent(
-              updatedPost.content.json,
-              updatedPost.content?.links ?? {},
+              updatedPost.body.json,
+              updatedPost.body?.links ?? {},
             ),
             DEFAULT_FORMATTER_OPTIONS,
           )}
         </div>
       )}
-
-      {jsonToReactComponents(updatedPost?.blocksCollection?.items ?? [])}
     </div>
   );
 };
 
-export default PreviewPageContainer;
+export default PreviewArticleContainer;

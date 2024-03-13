@@ -12,12 +12,12 @@ export const ArticleMinimalQuery = `
     ${AssetImageQuery}
   }
   category
+  urlPaths
 `;
 
 const ArticleQuery = `
   ${ArticleMinimalQuery}
   slug
-  urlPaths
   body {
     json
   }
