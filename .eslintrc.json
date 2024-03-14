@@ -18,7 +18,8 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react"
+    "react",
+    "eslint-plugin-local-rules"
   ],
   "settings": {
     "import/resolver": {
@@ -36,6 +37,7 @@
     "@typescript-eslint/prefer-nullish-coalescing": "off",
     "react-hooks/exhaustive-deps": "off",
     "@typescript-eslint/no-unsafe-argument": "off",
+    "local-rules/no-invalid-width-height": "warn",
     "@typescript-eslint/no-unused-vars": [
       "warn",
       {

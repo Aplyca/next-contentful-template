@@ -1,4 +1,4 @@
-# [PROJECT_NAME_MAY] Website
+# Next.js + Contentful Template
 ---
 
 [![License | MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENCE.md) [![platform Linux | macOS | Windows](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey.svg)](https://www.docker.com/products/docker-desktop) [![pipeline status](https://github.com/Aplyca/next-contentful-template/actions/workflows/deploy.prod.yml/badge.svg)](https://github.com/Aplyca/next-contentful-template/actions/workflows/deploy.prod.yml) 
@@ -205,13 +205,5 @@ Create .env file with enviroment variables below:
 - `ALGOLIA_APP_ID`: (required) Algolia app ID to use in search request.
 - `ALGOLIA_SEARCH_API_KEY`: (required) Algolia search API key to access to the search collection.
 - `ALGOLIA_INDEX_NAME`: (required) Algolia index name where data is stored.
-
-#### Recaptcha settings
-- `RECAPTCHA_SECRET_KEY_V3`: (optional) Recaptcha key to use with forms and prevent massive sends.
-- `NEXT_PUBLIC_RECAPTCHA_SITE_KEY_V3`: (optional) Same as `RECAPTCHA_SECRET_KEY_V3` but with prefix to use in client side.
-
-#### Analitycs settings
-- `NEXT_PUBLIC_GTM_ID`: (optional) Google tag manager ID to track events for analitycs.
-- `NEXT_PUBLIC_GA_MEASUREMENT_ID`: (optional) Google analitycs ID for track data in client side.
 
 !!! Please update this file when be needed.

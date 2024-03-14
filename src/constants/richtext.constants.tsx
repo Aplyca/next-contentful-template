@@ -1,7 +1,7 @@
 import { type Options } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types';
-import Image from 'next/image';
 
+import CustomImage from '@/components/atoms/custom-image/CustomImage';
 import CustomLink from '@/components/atoms/custom-link/CustomLink';
 import { type AssetProps } from '@/types/misc.types';
 import jsonToReactComponents from '@/utils/block-renderer.functions';
@@ -35,12 +35,12 @@ export const DEFAULT_FORMATTER_OPTIONS: Options = {
       return (
         <div className="w-full relative aspect-video overflow-hidden rounded-sm my-4">
           {item.contentType?.includes('image') && (
-            <Image
+            <CustomImage
               className="object-contain w-full h-full"
               src={item.url}
               alt={item.description ?? item.title}
-              width={item.width}
-              height={item.height}
+              width={1920}
+              height={1080}
             />
           )}
           {item.contentType?.startsWith('video') && (

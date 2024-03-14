@@ -7,8 +7,8 @@ import {
   useContentfulLiveUpdates,
 } from '@contentful/live-preview/react';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import Image from 'next/image';
 
+import CustomImage from '@/components/atoms/custom-image/CustomImage';
 import { type BlockContentPromoProps } from '@/types/block.types';
 import { interFont, ralewayFont } from '@/ui/fonts';
 
@@ -62,12 +62,12 @@ const PromoDefaultBlock: React.FC<BlockContentPromoProps> = ({
                 controls
               />
             ) : (
-              <Image
+              <CustomImage
                 className="object-contain w-full h-full"
                 src={updatedPost.media.url}
                 alt={updatedPost.media.description ?? updatedPost.media.title}
-                width={updatedPost.media.width}
-                height={updatedPost.media.height}
+                width={1920}
+                height={1080}
               />
             )}
           </div>

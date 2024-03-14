@@ -5,8 +5,8 @@ import {
   useContentfulLiveUpdates,
 } from '@contentful/live-preview/react';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import Image from 'next/image';
 
+import CustomImage from '@/components/atoms/custom-image/CustomImage';
 import { DEFAULT_FORMATTER_OPTIONS } from '@/constants/richtext.constants';
 import type { PageProps } from '@/types/page.types';
 import { ralewayFont } from '@/ui/fonts';
@@ -41,12 +41,12 @@ const PreviewPageContainer: React.FC<PageProps> = (
               controls
             />
           ) : (
-            <Image
+            <CustomImage
               className="object-cover w-full h-full"
               src={updatedPost.media.url}
               alt={updatedPost.media.description ?? updatedPost.media.title}
-              width={updatedPost.media.width}
-              height={updatedPost.media.height}
+              width={1920}
+              height={320}
             />
           )}
         </div>
