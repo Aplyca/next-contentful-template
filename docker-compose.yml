@@ -26,7 +26,7 @@ services:
       - ./public:/app/public:rw
       - ./tailwind.config.ts:/app/tailwind.config.ts:rw
       - ./postcss.config.js:/app/postcss.config.js:rw
-      - ./next.config.js:/app/next.config.js:rw
+      - ./next.config.mjs:/app/next.config.mjs:rw
       - ./.eslintrc.json:/app/.eslintrc.json:rw
       - ./.eslintignore:/app/.eslintignore:rw
     environment:
@@ -64,7 +64,7 @@ services:
       - ./src:/app/src:rw
       - ./tailwind.config.ts:/app/tailwind.config.ts:rw
       - ./postcss.config.js:/app/postcss.config.js:rw
-      - ./next.config.js:/app/next.config.js:rw
+      - ./next.config.mjs:/app/next.config.mjs:rw
       - ./.eslintrc.json:/app/.eslintrc.json:rw
       - ./.eslintignore:/app/.eslintignore:rw
       - ./.storybook:/app/.storybook:rw
