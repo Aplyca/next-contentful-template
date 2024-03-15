@@ -11,7 +11,7 @@ export const Providers = ({
 }): React.ReactElement => {
   return (
     <ContentfulLivePreviewProvider
-      locale="en"
+      locale="[DEFAULT_LOCALE]"
       enableInspectorMode={isEnabledDraft}
       enableLiveUpdates={isEnabledDraft}
     >

@@ -24,7 +24,7 @@ const getEntryContent = async <T>({
   preview = false,
   recursive = false,
   overrideMaxDepth = 0,
-  locale = 'en',
+  locale = '[DEFAULT_LOCALE]',
 }: {
   blockInfo: DefaultBlockInfo;
   preview?: boolean;
@@ -59,7 +59,7 @@ const getEntryContent = async <T>({
     ).query({
       query: gql`
         ${fragments}
-        query getEntry($id: String!, $preview: Boolean!, $locale: String = "en") {
+        query getEntry($id: String!, $preview: Boolean!, $locale: String = "[DEFAULT_LOCALE]") {
           ${type}(id: $id, preview: $preview, locale: $locale) {
             ${query}
           }

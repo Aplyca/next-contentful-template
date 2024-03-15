@@ -28,7 +28,7 @@ const getPageContent = async ({
   urlPath,
   preview = false,
   recursive = true,
-  locale = 'en',
+  locale = '[DEFAULT_LOCALE]',
 }: {
   urlPath: string;
   preview?: boolean;
@@ -66,7 +66,7 @@ const getPageContent = async ({
     ).query({
       query: gql`
         ${graphQlParts.fragments.join('\n')}
-        query getPage($urlPath: String!, $preview: Boolean!, $locale: String = "en") {
+        query getPage($urlPath: String!, $preview: Boolean!, $locale: String = "[DEFAULT_LOCALE]") {
           ${graphQlParts.queries.join('\n')}
         }
       `,
